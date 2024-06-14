@@ -20,12 +20,12 @@ from posts.views import PostDetailsView, PostCreate, PostUpdate, PostDelete, Com
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('post_info/<int:post_id>/', PostDetailsView.as_view()),
-    path('post_create/', PostCreate.as_view()),
-    path('post_update/<int:post_id>/', PostUpdate.as_view()),
-    path('post_del/<int:post_id>/', PostDelete.as_view()),
+    path('post/info/<int:post_id>/', PostDetailsView.as_view()),
+    path('post/create/', PostCreate.as_view()),
+    path('post/update/<int:post_id>/', PostUpdate.as_view()),
+    path('post/del/<int:post_id>/', PostDelete.as_view()),
     path('comment/', CommentCreate.as_view()),
-    path('comment_update/<int:comm_id>/', CommentUpdate.as_view()),
-    path('comment_delene/<int:comm_id>/', CommentDelete.as_view()),
+    path('comment/update/<int:comm_id>/', CommentUpdate.as_view()),
+    path('comment/delene/<int:comm_id>/', CommentDelete.as_view()),
     path('like/', LikeCreate.as_view())
 ]

@@ -29,10 +29,10 @@ $ python manage.py runserver # запускает проект
 Для отправки требуется получить токен авторизации в панели администратора ресурса: <адрес сервера>/admin
 Токен авторизации необходимо передавать в заголовке запроса в поле Authorization.
 Запрос следует направлять на url:
-#### http://< Ваш IP:Port или домен >/post_create/
+#### http://< Ваш IP:Port или домен >/post/create/
 Вот пример запроса curl со стороны клиента на добавление поста:
 ```php
-curl --location --request PUT 'http://127.0.0.1:8000/post_create/' \
+curl --location --request PUT 'http://127.0.0.1:8000/post/create/' \
 --header 'Authorization: Token 71257dfc2d9c2489033c5cc30b32e37446adbef5' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
 --data-urlencode 'image="/posts/media/1_1.jpg"' \
@@ -49,17 +49,18 @@ curl --location --request PUT 'http://127.0.0.1:8000/post_create/' \
 * image - Путь к картинке загруженной в проект тип Строка
 
 Запрос на изменение поста нужно отправиль на url:
-#### http://< Ваш IP:Port или домен >/post_update/< ИД поста в базе >/
+#### http://< Ваш IP:Port или домен >/post/update/< ИД поста в базе >/
 
 Вот пример запроса со стороны клиента http.client на изменение поста:
 ```php
-curl --location 'http://127.0.0.1:8000/post_update/1/' \
+curl --location 'http://127.0.0.1:8000/post/update/1/' \
 --header 'Authorization: Token 71257dfc2d9c2489033c5cc30b32e37446adbef5' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
 --data-urlencode 'id=1' \
 --data-urlencode 'text="Changed text"' \
 --data-urlencode 'image="/posts/media/test_image.jpg' \
---data-urlencode 'author=1'
+--data-urlencode 'author=1' \
+--data-urlencode 'author_id=1'
 ```
 Состав полей тот же
 
@@ -90,7 +91,7 @@ curl --location --request PUT 'http://127.0.0.1:8000/comment/' \
 Вот пример запроса в curl: 
 
 ```php
-curl --location 'http://127.0.0.1:8000/comment_update/1/' \
+curl --location 'http://127.0.0.1:8000/comment/update/1/' \
 --header 'Authorization: Token 71257dfc2d9c2489033c5cc30b32e37446adbef5' \
 --header 'Content-Type: application/x-www-form-urlencoded' \
 --data-urlencode 'post=3' \
@@ -119,13 +120,13 @@ curl --location --request PUT 'http://127.0.0.1:8000/like/' \
 ### 2.4 Получение деталей по посту методом GET
 
 Для получения детальной информации по нужному посту необходимо отправить запрос на адрес:
-#### http://< Ваш IP:Port или домен >/post_info/< ИД поста в базе >/
+#### http://< Ваш IP:Port или домен >/post/info/< ИД поста в базе >/
 Достаточно отправить только токен авторизации заголовке запроса в поле Authorization.
 
 Пример запроса в curl:
 
 ```php
-curl --location 'http://127.0.0.1:8000/post_info/3/' \
+curl --location 'http://127.0.0.1:8000/post/info/3/' \
 --header 'Authorization: Token 71257dfc2d9c2489033c5cc30b32e37446adbef5'
 ```
 

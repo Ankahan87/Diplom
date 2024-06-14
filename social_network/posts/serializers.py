@@ -37,5 +37,5 @@ class LikeCount(serializers.ModelSerializer):
 class PUT_POST_PostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Post
-        fields = ['text', 'image', 'author']
+        fields = ['text', 'image', 'author', 'author_id']
 

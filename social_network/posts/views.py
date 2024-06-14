@@ -18,7 +18,7 @@ class PostDetailsView(APIView):
             ser_post = PostSerializer(post)
             return Response(ser_post.data)
         except Post.DoesNotExist:
-            return Response({"message": "Пост не найден!"})
+            return Response({"status": "false", "message": "404 Not Found"})
         
 class PostCreate(APIView):
     permission_classes = [IsAuthenticated, IsAdminUser]
@@ -27,28 +27,28 @@ class PostCreate(APIView):
         serializer = PUT_POST_PostSerializer(data=imput_data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return Response({"message": "Пост успешно опубликован!"})
+            return Response({"status": "true", "data" : serializer.data})
         else:
-            return Response({"message": "Ошибка! Проверьте запрос!"})
+            return Response({"status": "false", "message": "400 Bad Request"})
         
 class PostUpdate(APIView):
     permission_classes = [IsAuthenticated, IsAdminUser]
     def post(self, request, post_id):
         imput_data = request.data
         try:
-            post_ = Post.objects.get(id=int(post_id))
-            if post_.author == int(imput_data['author']):
+            post_ = Post.objects.get(id=post_id)
+            if post_.author_id == int(imput_data['author_id']):
                 serializer = PUT_POST_PostSerializer(data=imput_data)
                 if serializer.is_valid(raise_exception=True):
                     serializer.save()
-                    return Response({"message": "Пост успешно обновлен!"})
+                    return Response({"status": "true", "data" : serializer.data})
                 else:
-                    return Response({"message": "Ошибка! Проверьте запрос!"})
+                    return Response({"status": "false", "message": "400 Bad Request"})
             else:
-                return Response({"message": "Упс! Не удалось инициализировать автора поста!"})
+                return Response({"status": "false", "message": "404 Not Found (author)"})
         except:
             Post.DoesNotExist()
-            return Response({"message": "Ошибка! Проверьте запрос!"})
+            return Response({"status": "false", "message": "404 Not Found"})
 
 class CommentCreate(APIView):
     permission_classes = [IsAuthenticated, IsAdminUser]
@@ -57,9 +57,9 @@ class CommentCreate(APIView):
         serializer = CommentPostSerializer(data=imput_data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return Response({"message": "Комментарий успешно опубликован!"})
+            return Response({"status": "true", "data" : serializer.data})
         else:
-            return Response({"message": "Ошибка! Проверьте запрос!"})
+            return Response({"status": "false",  "message": "400 Bad Request"})
 
 class CommentUpdate(APIView):
     permission_classes = [IsAuthenticated, IsAdminUser]
@@ -71,14 +71,14 @@ class CommentUpdate(APIView):
                 serializer = CommentPostSerializer(data=imput_data)
                 if serializer.is_valid(raise_exception=True):
                     serializer.save()
-                    return Response({"message": "Комментарий обновлен!"})
+                    return Response({"status": "true", "data" : serializer.data})
                 else:
-                    return Response({"message": "Ошибка! Проверьте запрос!"})
+                    return Response({"status": "false", "message": "400 Bad Request"})
             else:
-                return Response({"message": "Упс! Не удалось инициализировать автора комментария!"})
+                return Response({"status": "false", "message": "404 Not Found (author)"})
         except:
             Comment.DoesNotExist
-            return Response({"message": "Ошибка! Проверьте запрос!"})
+            return Response({"status": "false", "message": "404 Not Found"})
             
 class LikeCreate(APIView):
     permission_classes = [IsAuthenticated, IsAdminUser]
@@ -87,9 +87,9 @@ class LikeCreate(APIView):
         serializer = LikePostSerializer(data=imput_data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
-            return Response({"message": "Like успешно принят!"})
+            return Response({"status": "true", "data" : serializer.data})
         else:
-            return Response({"message": "Ошибка! Проверьте запрос!"})
+            return Response({"status": "false", "message": "400 Bad Request"})
 
 class CommentDelete(APIView):
     permission_classes = [IsAuthenticated]
@@ -99,9 +99,9 @@ class CommentDelete(APIView):
         if serializer.is_valid(raise_exception=True):
             ob = Comment.objects.get(id=int(comm_id))
             ob.delete()
-            return Response({"message": "Комментарий удален!"})
+            return Response({"status": "true", "message": "202 Accepted"})
         else:
-            return Response({"message": "Ошибка! Проверьте запрос!"})
+            return Response({"status": "false", "message": "400 Bad Request"})
 
 class PostDelete(APIView):
     permission_classes = [IsAuthenticated]
@@ -111,6 +111,6 @@ class PostDelete(APIView):
         if serializer.is_valid(raise_exception=True):
             ob = Comment.objects.get(id=int(post_id))
             ob.delete()
-            return Response({"message": "Пост удален!"})
+            return Response({"status": "true", "message": "202 Accepted"})
         else:
-            return Response({"message": "Ошибка! Проверьте запрос!"})
+            return Response({"status": "false", "message": "400 Bad Request"})
